@@ -1,0 +1,21 @@
+services:
+  proxy:
+    image: "nginx:latest"
+    volumes:
+      - "./infra/nginx.conf:/etc/nginx/nginx.conf:ro"
+    ports:
+      - "8081:80"
+      - "8082:81"
+    depends_on: [uwsgi, gunicorn]
+  uwsgi:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.uwsgi
+    environment:
+      PYTHONUNBUFFERED: TRUE  # disable the Python stdout buffering
+  gunicorn:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.gunicorn
+    environment:
+      PYTHONUNBUFFERED: TRUE

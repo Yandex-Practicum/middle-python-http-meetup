@@ -1,0 +1,9 @@
+FROM python:3.13-slim-bookworm
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir gunicorn==23.0.0
+
+COPY ./wsgi.py ./infra/gunicorn.conf.py ./
+
+CMD ["gunicorn", "-c", "gunicorn.conf.py"]

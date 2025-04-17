@@ -1,4 +1,5 @@
 def application(environ, start_response):
+    print(environ, start_response)
     print(f'{environ.get("X-Real-IP", environ.get("HTTP_X_REAL_IP"))=}')
     print(f'{environ.get("X-Forwarded-For", environ.get("HTTP_X_FORWARDED_FOR"))=}')
     print(f'{environ.get("X-Forwarded-Proto", environ.get("HTTP_X_FORWARDED_PROTO"))=}')
@@ -8,7 +9,7 @@ def application(environ, start_response):
 
     try:
         request_body_size = int(environ.get('CONTENT_LENGTH', 0))
-    except (ValueError):
+    except ValueError:
         request_body_size = 0
 
     print(f'{environ["wsgi.input"].read(request_body_size)=}')
@@ -21,4 +22,4 @@ def application(environ, start_response):
         server = 'uwsgi'
 
     start_response('200 OK', [('Content-Type', 'text/html')])
-    return [f"<h1'>Hello from Ilias ({server})!</h1>".encode()]
+    return [f"<h1'>Greetings from Practicum ({server})!</h1>".encode()]
